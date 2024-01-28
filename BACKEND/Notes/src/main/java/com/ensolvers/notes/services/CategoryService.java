@@ -26,7 +26,7 @@ public class CategoryService {
             Pageable sortedByOrderDesc =
                     PageRequest.of(nroPage, regXPage, Sort.by(order).descending());
 
-            return categoryRepository.findAll(sortedByOrderDesc);
+            return categoryRepository.findAllByActiveOrderById(sortedByOrderDesc, "1");
         }
 
     public ApiResponse<Category> createCategory(CategoryRequest request){
