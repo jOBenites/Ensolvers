@@ -106,4 +106,20 @@ export class NoteComponent implements OnInit {
   }
 
 
+  Category() {
+    const dialogRef = this.dialog.open(DialogNoteComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.serve.post("/category", result).subscribe(
+        (res: any) => {
+          console.log(res);
+          this.getNotes();
+        },
+        (err: any) => {
+           console.log(err);
+        }
+      )
+    });
+  }
+
 }

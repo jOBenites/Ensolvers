@@ -1,0 +1,18 @@
+<form class="example-form" [formGroup]="formGroup" (submit)="save()">
+  <h2 mat-dialog-title>Guardar Categoaria</h2>
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field class="example-full-width">
+      <mat-label>Categoria</mat-label>
+      <input matInput placeholder="Ingrese una categoria" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Color</mat-label>
+      <textarea matInput placeholder="Ingrese un color." formControlName="color"></textarea>
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="submit" mat-button>Guardar</button>
+  </mat-dialog-actions>
+</form>
