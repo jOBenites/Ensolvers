@@ -1,5 +1,6 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
@@ -10,7 +11,7 @@ import { ConsumeServeService } from '../../services/consume-serve.service';
   selector: 'app-note-archived',
   standalone: true,
    imports: [
-    HttpClientModule,
+    RouterModule,
     MatCardModule,
     MatListModule,
     MatIconModule
@@ -18,14 +19,14 @@ import { ConsumeServeService } from '../../services/consume-serve.service';
   templateUrl: './note-archived.component.html',
   styleUrl: './note-archived.component.scss'
 })
-export class NoteArchivedComponent {
+export class NoteArchivedComponent implements OnInit {
 public notes: Array<Note>;
 
-  constructor(private client: HttpClient,  private serve: ConsumeServeService){
+  constructor(private serve: ConsumeServeService){
     this.notes = [{id: 0, title: '', description: '', categoryId: 0}];
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
    this.getNotes();
   }
 

@@ -1,5 +1,5 @@
 import { RouterModule } from '@angular/router';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import {MatDialog} from '@angular/material/dialog';
@@ -22,7 +22,7 @@ import { ConsumeServeService } from '../../services/consume-serve.service';
   templateUrl: './note.component.html',
   styleUrl: './note.component.scss'
 })
-export class NoteComponent implements AfterViewInit {
+export class NoteComponent implements OnInit {
 
   public notes: Array<Note>;
 
@@ -30,7 +30,7 @@ export class NoteComponent implements AfterViewInit {
     this.notes = [{id: 0, title: '', description: '', categoryId: 0}];
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.getNotes();
   }
 
@@ -63,6 +63,7 @@ export class NoteComponent implements AfterViewInit {
   }
 
   editNoteDialog(data: Note) {
+    console.log(data);
     const dialogRef = this.dialog.open(DialogNoteComponent, {
       data: data
     });
