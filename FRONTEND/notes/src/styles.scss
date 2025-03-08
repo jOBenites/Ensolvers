@@ -1,23 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+@use './m3-theme' as theme;
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 // import our custom theme
 
+html {
+  @include mat.all-component-themes(theme.$light-theme);
+  @include mat.system-level-colors(theme.$light-theme);
+  @include mat.form-field-density(theme.$compact-theme);
+  height: 100%;
+}
+
+body {
+  font-family: Amiko, sans-serif;
+  margin: 0;
+  height: 100%;
+}
+
 @include mat.core();
-
-$my-primary: mat.define-palette(mat.$indigo-palette, 500);
-$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
-$my-theme: mat.define-light-theme((color: (primary: $my-primary,
-        accent: $my-accent,
-      ),
-      typography: mat.define-typography-config(),
-      density: 0,
-    ));
-
-@include mat.all-component-themes($my-theme);
+@include mat.color-variants-backwards-compatibility(theme.$light-theme);
+$typography-config: mat.m2-define-typography-config($font-family: 'Amiko, sans-serif',
+  $body-2: mat.m2-define-typography-level(14px, 24px, 500),
+  $body-1: mat.m2-define-typography-level(14px, 20px, 400),
+  $button: mat.m2-define-typography-level(14px, 36px, 500, $letter-spacing: 0.014rem),
+);
+@include mat.typography-hierarchy($typography-config);
