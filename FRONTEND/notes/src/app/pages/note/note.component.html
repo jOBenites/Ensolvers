@@ -4,7 +4,7 @@
       <mat-icon>add</mat-icon>
     </button>
     <button class="mx-2" routerLink="/category" mat-mini-fab color="secondary">
-      <mat-icon fontIcon="category"></mat-icon>
+      <mat-icon fontIcon="bookmarks"></mat-icon>
     </button>
   </div>
 </div>
@@ -32,7 +32,6 @@
             <mat-list-item>
               <div matListItemTitle>{{note.title}}</div>
               <div matListItemLine>{{note.description}}</div>
-
               <div matListItemLine>
                   <mat-chip-set>
                   @for (category of note.categories; track Category) {
