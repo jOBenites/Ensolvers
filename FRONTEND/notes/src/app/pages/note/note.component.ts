@@ -164,7 +164,7 @@ export class NoteComponent implements OnInit {
       let flag = true;
       if(filtro.length <= 0) {
         while(flag) {
-          let filtroCat = this.tempNotes![indice].categories!.filter(element => element.name.toLowerCase().includes(filterValue.toLowerCase()));
+          let filtroCat = this.tempNotes![indice]?.categories!.filter(element => element.name.toLowerCase().includes(filterValue.toLowerCase()));
           if(filtroCat.length > 0) {
             flag = false;
           }
