@@ -8,7 +8,13 @@ import {MatIconModule} from '@angular/material/icon';
 import Note from '../../modules/note.model';
 import { DialogNoteComponent } from '../../components/dialog-note/dialog-note.component';
 import { ConsumeServeService } from '../../services/consume-serve.service';
-
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { DialogAsignLabelsComponent } from '../../components/dialog-asign-labels/dialog-asign-labels.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 @Component({
   selector: 'app-note',
@@ -17,17 +23,23 @@ import { ConsumeServeService } from '../../services/consume-serve.service';
     RouterModule,
     MatCardModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule, 
+    MatInputModule,
+    MatTooltipModule,
+    MatChipsModule,
+    FormsModule
    ],
   templateUrl: './note.component.html',
   styleUrl: './note.component.scss'
 })
 export class NoteComponent implements OnInit {
 
-  public notes: Array<Note>;
+  public notes: Array<Note> | undefined;
+  public tempNotes: Array<Note> | undefined;
 
   constructor(public dialog: MatDialog, private serve: ConsumeServeService){
-    this.notes = [{id: 0, title: '', description: '', categoryId: 0}];
   }
 
   ngOnInit(): void {
@@ -39,6 +51,7 @@ export class NoteComponent implements OnInit {
       (res: any) => {
         console.log(res);
         this.notes = res.data;
+        this.tempNotes = this.notes;
       },
       (err: any) => {
         console.log(err);
@@ -50,15 +63,17 @@ export class NoteComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogNoteComponent);
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      this.serve.post("/note", result).subscribe(
-        (res: any) => {
-          console.log(res);
-          this.getNotes();
-        },
-        (err: any) => {
-           console.log(err);
-        }
-      )
+      if(result) {
+        this.serve.post("/note", result).subscribe(
+          (res: any) => {
+            console.log(res);
+            this.getNotes();
+          },
+          (err: any) => {
+             console.log(err);
+          }
+        ); 
+      }
     });
   }
 
@@ -105,6 +120,24 @@ export class NoteComponent implements OnInit {
       );
   }
 
+  labelNote(data: Note){
+    const dialogRef = this.dialog.open(DialogAsignLabelsComponent, {
+      data: data
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.serve.post(`/${data.id}/assign-categories`, result).subscribe(
+        (res: any) => {
+          console.log(res);
+          this.getNotes();
+        },
+        (err: any) => {
+           console.log(err);
+        }
+      )
+    });
+  }
+
 
   Category() {
     const dialogRef = this.dialog.open(DialogNoteComponent);
@@ -120,6 +153,30 @@ export class NoteComponent implements OnInit {
         }
       )
     });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if(filterValue != '') {
+      let filtro = this.tempNotes!.filter(element => element.title.toLowerCase().includes(filterValue.toLowerCase()));
+      
+      let indice = 0;
+      let flag = true;
+      if(filtro.length <= 0) {
+        while(flag) {
+          let filtroCat = this.tempNotes![indice].categories!.filter(element => element.name.toLowerCase().includes(filterValue.toLowerCase()));
+          if(filtroCat.length > 0) {
+            flag = false;
+          }
+          indice++;
+        }
+        filtro = [this.tempNotes![indice -1]];
+      }
+
+      this.notes = filtro;
+    } else {
+      this.notes = this.tempNotes;
+    }
   }
 
 }

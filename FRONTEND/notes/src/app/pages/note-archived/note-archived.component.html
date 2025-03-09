@@ -7,15 +7,15 @@
       </mat-card-header>
       <mat-card-content>
         <mat-list>
-          <div mat-subheader>unarchive</div>
           @for (note of notes; track note) {
           <mat-list-item>
             <div matListItemTitle>{{note.title}}</div>
             <div matListItemLine>{{note.description}}</div>
-            <button class="icon-class" mat-icon-button (click)="archivedNote(note)">
+            <button class="icon-class" mat-icon-button (click)="archivedNote(note)" matTooltip="Desarchivar">
               <mat-icon class="mat-24">unarchive</mat-icon>
             </button>
           </mat-list-item>
+          <div style="height: 5px;"></div>
           <mat-divider></mat-divider>
           }
 

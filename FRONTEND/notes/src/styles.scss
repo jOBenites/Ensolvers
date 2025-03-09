@@ -1,9 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@use 'bootstrap/scss/bootstrap';
 @use '@angular/material' as mat;
 @use './m3-theme' as theme;
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
-// import our custom theme
 
 html {
   @include mat.all-component-themes(theme.$light-theme);

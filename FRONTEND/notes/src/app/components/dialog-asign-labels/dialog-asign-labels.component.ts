@@ -4,19 +4,15 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ConsumeServeService } from '../../services/consume-serve.service';
+import { Category } from '../../interfaces/category.interface';
 
-interface Category {
-  id: number;
-  name: string;
-}
 
 export interface DialogData {
   id: number;
   title: string;
   description: string;
-  category: Category;
 }
 
 @Component({
@@ -28,28 +24,24 @@ export interface DialogData {
     MatFormFieldModule, 
     MatInputModule,
     MatCheckboxModule],
-  templateUrl: './dialog-note.component.html',
-  styleUrl: './dialog-note.component.scss'
+  templateUrl: './dialog-asign-labels.component.html',
+  styleUrl: './dialog-asign-labels.component.scss'
 })
-export class DialogNoteComponent implements OnInit {
+export class DialogAsignLabelsComponent implements OnInit {
   public formGroup: FormGroup;
-  public categories: Array<any>;
+  public categories: Array<Category>;
 
   constructor(private fb: FormBuilder, private serve: ConsumeServeService,
-    public dialogRef: MatDialogRef<DialogNoteComponent>,
+    public dialogRef: MatDialogRef<DialogAsignLabelsComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogData: DialogData){
     this.formGroup = this.fb.group({
-      id: [dialogData?.category?.id],
-      title: [dialogData?.title, [Validators.required]],
-      description: [dialogData?.description, [Validators.required]],
-      categoryId: [1]
-      // categoryId: [dialogData?.category?.id != null ? dialogData?.category?.id : 0]
+      id: [dialogData?.id]
     });
     this.categories = [];
   }
   
     ngOnInit(): void {
-    this.serve.get("/category?nroPage=0&regXPage=30&order=id").subscribe(
+    this.serve.get("/categories?noteId=" + this.formGroup.get('id')?.value).subscribe(
       (res: any) => {
         this.categories = res.data;
       },
@@ -59,9 +51,13 @@ export class DialogNoteComponent implements OnInit {
     );
   }
 
+  update(completed: boolean, index: number) {
+    this.categories![index].asigned = completed ? 1 : 0;
+  }
+
   save(){ 
     if(this.formGroup.valid){
-      this.dialogRef.close(this.formGroup.value);
+      this.dialogRef.close(this.categories);
     }
   }
 

@@ -6,6 +6,8 @@ import { MatListModule } from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 import Note from '../../modules/note.model';
 import { ConsumeServeService } from '../../services/consume-serve.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-note-archived',
@@ -14,16 +16,18 @@ import { ConsumeServeService } from '../../services/consume-serve.service';
     RouterModule,
     MatCardModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule
    ],
   templateUrl: './note-archived.component.html',
   styleUrl: './note-archived.component.scss'
 })
 export class NoteArchivedComponent implements OnInit {
-public notes: Array<Note>;
+public notes: Array<Note> | undefined;
 
   constructor(private serve: ConsumeServeService){
-    this.notes = [{id: 0, title: '', description: '', categoryId: 0}];
+    // this.notes = [{id: 0, title: '', description: '', categoryId: 0}];
   }
 
   ngOnInit(): void {

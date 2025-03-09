@@ -6,17 +6,21 @@ import { ConsumeServeService } from "../../services/consume-serve.service";
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
-import { DialogCategoryComponent } from '../../dialog-category/dialog-category.component';
+import { DialogCategoryComponent } from '../../components/dialog-category/dialog-category.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-category',
   standalone: true,
    imports: [
-     RouterModule,
-     MatCardModule,
+    RouterModule,
+    MatCardModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonModule
    ],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss'

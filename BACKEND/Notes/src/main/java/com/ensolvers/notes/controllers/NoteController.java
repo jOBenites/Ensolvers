@@ -3,6 +3,7 @@ package com.ensolvers.notes.controllers;
 
 import com.ensolvers.notes.controllers.dto.ApiPaginateResponse;
 import com.ensolvers.notes.controllers.dto.ApiResponse;
+import com.ensolvers.notes.controllers.dto.CategoryResponse;
 import com.ensolvers.notes.controllers.dto.NoteRequest;
 import com.ensolvers.notes.models.Note;
 import com.ensolvers.notes.services.NoteService;
@@ -49,11 +50,19 @@ public class NoteController {
                 rs, page.getTotalElements(), page.getTotalPages()), HttpStatus.OK);
     }
 
+    @GetMapping("/categories")
+    public ResponseEntity<ApiResponse<List<CategoryResponse>>> categories(
+            @RequestParam("noteId") Long noteId
+    ){
+        List<CategoryResponse> list = noteService.getAllCategoriesAsignedByNote(noteId);
+        return new ResponseEntity<>(new ApiResponse<>("OK", HttpStatus.OK.value(), "Exito",
+                list), HttpStatus.OK);
+    }
 
     @PostMapping("/note")
     public  ResponseEntity<ApiResponse<Note>> create(@RequestBody NoteRequest request){
         ApiResponse<Note> note = noteService.createNote(request);
-        return new ResponseEntity(note, HttpStatus.OK);
+        return new ResponseEntity<>(note, HttpStatus.OK);
     }
 
     @PutMapping("/note/{id}")
@@ -78,6 +87,15 @@ public class NoteController {
     public ResponseEntity<ApiResponse<Note>> dearchived(@PathVariable Long id){
         ApiResponse<Note> note = noteService.dearchived(id);
         return new ResponseEntity<>(note, HttpStatus.OK);
+    }
+
+    @PostMapping("/{noteId}/assign-categories")
+    public ResponseEntity<ApiResponse<Note>> assignCategoriesToNote(
+            @PathVariable Long noteId,
+            @RequestBody List<CategoryResponse> categoryAssignments) {
+        noteService.assignCategoriesToNote(noteId, categoryAssignments);
+        return new ResponseEntity<>(new ApiResponse<>("OK", HttpStatus.OK.value(), "Se asignó correctamente!",
+                null), HttpStatus.OK);
     }
 
 }

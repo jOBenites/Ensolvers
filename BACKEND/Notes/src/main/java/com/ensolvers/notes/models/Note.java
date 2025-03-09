@@ -1,6 +1,9 @@
 package com.ensolvers.notes.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "note")
@@ -14,19 +17,23 @@ public class Note {
     public String title;
     @Column(name = "description")
     public String description;
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    public Category category;
     @Column(name = "active")
     public String active;
     @Column(name = "flag_archived")
     public String flagArchived;
 
-    public Note(Long id, String title, String description, Category category, String active, String flagArchived) {
+    @ManyToMany
+    @JoinTable(
+            name = "note_category",
+            joinColumns = @JoinColumn(name = "note_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @JsonManagedReference // Manages the serialization
+    private Set<Category> categories;
+
+    public Note(Long id, String title, String description, String active, String flagArchived) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.category = category;
         this.active = active;
         this.flagArchived = flagArchived;
     }
@@ -59,14 +66,6 @@ public class Note {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public String getActive() {
         return active;
     }
@@ -81,5 +80,13 @@ public class Note {
 
     public void setFlagArchived(String flagArchived) {
         this.flagArchived = flagArchived;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }

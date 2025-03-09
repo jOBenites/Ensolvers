@@ -5,7 +5,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule} from '@angular/forms';
-import { ConsumeServeService } from '../services/consume-serve.service';
+import { ConsumeServeService } from '../../services/consume-serve.service';
 
 export interface DialogDataCategory {
   name: string;

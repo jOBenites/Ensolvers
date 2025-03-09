@@ -1,6 +1,9 @@
 package com.ensolvers.notes.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -15,6 +18,10 @@ public class Category {
     public String color;
     @Column(name = "active")
     public String active;
+
+    @ManyToMany(mappedBy = "categories")
+    @JsonBackReference // Prevents infinite recursion
+    private Set<Note> notes;
 
     public Category(Long id, String name, String color, String active){
         this.id = id;
@@ -57,5 +64,13 @@ public class Category {
 
     public void setActive(String active) {
         this.active = active;
+    }
+
+    public Set<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(Set<Note> notes) {
+        this.notes = notes;
     }
 }

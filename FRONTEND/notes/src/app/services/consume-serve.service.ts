@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Note from '../modules/note.model';
-import Category from '../modules/category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +15,11 @@ export class ConsumeServeService {
     return this.httpClient.get(this.baseUrl + url);
   }
 
-  public post(url: string, data: Note){
+  public post(url: string, data: any){
      return this.httpClient.post(this.baseUrl + url, data);
   }
 
-  public put(url: string, id: number, data: Note){
+  public put(url: string, id: number, data: any){
      return this.httpClient.put(this.baseUrl + url+'/'+id, data);
   }
 
